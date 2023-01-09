@@ -1,0 +1,136 @@
+\ProvidesPackage{bookstyle}
+\usepackage{scrhack}
+
+\usepackage[T1]{fontenc}
+
+\usepackage{xcolor}
+\definecolor{codebox-frame}{HTML}{1F252E}
+\definecolor{codebox-bg}{HTML}{282C34}
+\definecolor{codebox-title}{HTML}{FFFFFF}
+
+% For syntax coloring:
+\definecolor{python-keyword}{HTML}{E06C75}
+\definecolor{python-comment}{HTML}{AAB7B8}
+\definecolor{python-identifier}{HTML}{61AFEF}
+\definecolor{python-string}{HTML}{98C379}
+
+\usepackage{caption} % Captions stuff
+\usepackage{float} % For H
+\usepackage{graphicx}
+\graphicspath{{images/}}
+
+
+\usepackage{hyperref} % For refs
+
+% Code boxes & highlighting
+\usepackage[many]{tcolorbox}
+\tcbuselibrary{listings}
+
+%============ LISTINGS =======================%
+% Code
+\newtcblisting[auto counter]{codebox}[2]{%
+    listing only,
+    breakable,
+    width=#1,
+    center,
+    top=0mm,
+    bottom=0mm,
+    left=5mm,
+    boxrule=0.5mm,
+    colback=codebox-bg,
+    colframe=codebox-frame,
+    coltitle=codebox-title,
+    title=Code Block \thetcbcounter: #2,
+    listing options={%
+        numbers=left,
+        numbersep=1mm,
+        numberstyle=\tiny\color{white},
+        language=Python,
+        tabsize=4,
+        showspaces=false,
+        showstringspaces=false,
+        upquote=true,
+        aboveskip=-1mm,
+        belowskip=0mm,
+        basicstyle=\footnotesize\color{white},
+        commentstyle=\color{python-comment},
+        keywordstyle=\color{python-keyword},
+        identifierstyle=\color{python-identifier},
+        stringstyle=\color{python-string}
+    }
+}
+
+% Python Interpreter
+\newtcblisting[auto counter]{pyshell}[2]{%
+    listing only,
+    breakable,
+    width=#1,
+    center,
+    top=0mm,
+    bottom=0mm,
+    left=5mm,
+    boxrule=0.5mm,
+    colback=black,
+    colframe=codebox-frame,
+    title=Python Interpreter \thetcbcounter: #2,
+    listing options={%
+        language=Python,
+        tabsize=4,
+        showspaces=false,
+        showstringspaces=false,
+        upquote=true,
+        aboveskip=0mm,
+        belowskip=0mm,
+        basicstyle=\footnotesize\color{white},
+        commentstyle=\color{white},
+        keywordstyle=\color{white},
+        identifierstyle=\color{white},
+        stringstyle=\color{white}
+    }
+}
+
+% Bash Shell
+\newtcblisting[auto counter]{shell}[2]{%
+    listing only,
+    breakable,
+    width=#1,
+    center,
+    top=0mm,
+    bottom=0mm,
+    left=5mm,
+    boxrule=0.5mm,
+    colback=black,
+    colframe=codebox-frame,
+    title=Shell \thetcbcounter: #2,
+    listing options={%
+        language=Bash,
+        escapeinside={(*@}{@*)}
+        tabsize=4,
+        showspaces=false,
+        showstringspaces=false,
+        upquote=true,
+        aboveskip=-4mm,
+        belowskip=0mm,
+        basicstyle=\footnotesize\color{white},
+        commentstyle=\color{white},
+        keywordstyle=\color{green},
+        identifierstyle=\color{white},
+        stringstyle=\color{white}
+    }
+}
+%========= END LISTINGS ======================%
+
+\usepackage{amssymb}
+\usepackage{tikz}
+
+\DeclareFixedFont{\textcap}{T1}{phv}{bx}{n}{1cm}
+
+\addtokomafont{chapter}{
+    \textcap
+}
+
+% \titleformat{\chapter}[display]%
+%     {\usekomafont{sectioning}\usekomafont{chapter}\filleft}%
+%     {\textcap\textcolor[named]{gray}\thechapter}
+%     {1em}
+%     {}
