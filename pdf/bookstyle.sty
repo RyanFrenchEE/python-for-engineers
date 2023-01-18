@@ -1,8 +1,23 @@
 \ProvidesPackage{bookstyle}
+\usepackage[automark]{scrlayer-scrpage}
 \usepackage{scrhack}
+\usepackage[nostruts]{titlesec}
+\usepackage{lipsum}
 
 \usepackage[T1]{fontenc}
+\usepackage{fontspec}
+\defaultfontfeatures{Ligatures=TeX}
+\defaultfontfeatures{Mapping=tex-text}
+\setmainfont{Arial}
+\newfontfamily{\sans}{Arial}
 
+\usepackage{microtype}
+\usepackage{pifont}
+\usepackage{amssymb}
+\usepackage{tikz}
+\usepackage{etoolbox}
+
+% For codebox coloring:
 \usepackage{xcolor}
 \definecolor{codebox-frame}{HTML}{1F252E}
 \definecolor{codebox-bg}{HTML}{282C34}
@@ -19,12 +34,27 @@
 \usepackage{graphicx}
 \graphicspath{{images/}}
 
+% Custom lists
+\usepackage{enumitem}
 
 \usepackage{hyperref} % For refs
 
 % Code boxes & highlighting
 \usepackage[many]{tcolorbox}
 \tcbuselibrary{listings}
+
+
+%============ TITLE PAGE =====================%
+\title{\textcap{Python\par - the Dumb Way}}
+\author{
+    \textauthor{Ryan French, M.S.}
+}
+\date{}
+%============ END TITLE PAGE =================%
+
+
+
+
 
 %============ LISTINGS =======================%
 % Code
@@ -75,11 +105,12 @@
     title=Python Interpreter \thetcbcounter: #2,
     listing options={%
         language=Python,
+        escapeinside={(*@}{@*)}
         tabsize=4,
         showspaces=false,
         showstringspaces=false,
         upquote=true,
-        aboveskip=0mm,
+        aboveskip=-4mm,
         belowskip=0mm,
         basicstyle=\footnotesize\color{white},
         commentstyle=\color{white},
@@ -90,6 +121,11 @@
 }
 
 % Bash Shell
+\lstdefinelanguage{ModBash}{%
+    language = Bash,
+    keywords=[2]{ryan@laptop, root@laptop},
+    keywordstyle=[2]\color{green}
+}
 \newtcblisting[auto counter]{shell}[2]{%
     listing only,
     breakable,
@@ -103,34 +139,105 @@
     colframe=codebox-frame,
     title=Shell \thetcbcounter: #2,
     listing options={%
-        language=Bash,
-        escapeinside={(*@}{@*)}
+        language=ModBash,
+        escapeinside={(*@}{@*)},
         tabsize=4,
         showspaces=false,
         showstringspaces=false,
         upquote=true,
-        aboveskip=-4mm,
+        aboveskip=0mm,
         belowskip=0mm,
         basicstyle=\footnotesize\color{white},
-        commentstyle=\color{white},
-        keywordstyle=\color{green},
-        identifierstyle=\color{white},
-        stringstyle=\color{white}
+        keywordstyle=\color{red},
     }
 }
 %========= END LISTINGS ======================%
 
-\usepackage{amssymb}
-\usepackage{tikz}
 
-\DeclareFixedFont{\textcap}{T1}{phv}{bx}{n}{1cm}
+%=========== Formatting ======================%
+\DeclareFixedFont{\textcap}{T1}{phv}{bx}{n}{18pt}
+\DeclareFixedFont{\numcap}{T1}{phv}{bx}{n}{14pt}
+\DeclareFixedFont{\textauthor}{T1}{phv}{bx}{n}{16pt}
 
-\addtokomafont{chapter}{
-    \textcap
+% Declare Fonts
+\addtokomafont{chapter}{\bfseries\textcap}
+\addtokomafont{section}{\bfseries}
+\addtokomafont{pagefoot}{\small\normalfont\bfseries}
+
+% ToC Format
+\RedeclareSectionCommand[
+    tocentrynumberformat=\bfseries\sans,
+    tocentryformat=\bfseries\sans,
+    tocpagenumberformat=\bfseries\sans
+]{chapter}
+\RedeclareSectionCommand[
+    tocentrynumberformat=\sans,
+    tocentryformat=\sans,
+    tocpagenumberformat=\sans,
+    toclinefill=\hfill
+]{section}
+
+% Chapter Format
+\renewcommand*{\chapterformat}{Chapter \thechapter{}:}
+
+\renewcommand\chapterlinesformat[3]{%
+  \raggedleft #2 #3\par%
+  \vspace{-1.5\topskip}
+  \makebox[\textwidth][l]{\rule{\textwidth}{1pt}}
+}%
+
+\RedeclareSectionCommand[
+    afterskip=0pt,
+    beforeskip=0pt,
+    innerskip=0pt
+]{chapter}
+\titlespacing{\chapter}{0pt}{-3\topskip}{0pt}[0pt] % Move chapter up page
+\KOMAoptions{open=right} % All new chapters start on the right
+
+% Section Format
+\titleformat{\section}[display]%
+    {\usekomafont{sectioning}\usekomafont{section}\filright}%
+    {}%
+    {1em}%
+    {}%
+\titlespacing{\section}{0pt}{-\baselineskip}{-12pt}[0pt]
+
+% Header/Footer Format
+\pagestyle{scrheadings}
+\clearscrheadfoot
+\KOMAoptions{footsepline, plainfootsepline}
+\renewcommand*{\chaptermarkformat}{}
+\renewcommand*{\sectionmarkformat}{}
+% Odd pages: Section | Page
+\rofoot[\thepage]{\rightmark{} | \thepage}
+% Even pages: Page | Chapter
+\lefoot[\thepage{}]{\thepage{} | \leftmark}
+
+% Dictum Format
+\setkomafont{dictumtext}{\itshape\small\sans}
+\setkomafont{dictumauthor}{\normalfont\small\sans}
+\renewcommand*{\dictumwidth}{0.5\linewidth}
+\renewcommand*{\dictumauthorformat}[1]{
+    --- #1
 }
 
-% \titleformat{\chapter}[display]%
-%     {\usekomafont{sectioning}\usekomafont{chapter}\filleft}%
-%     {\textcap\textcolor[named]{gray}\thechapter}
-%     {1em}
-%     {}
+%=========== End Formatting ==================%
+
+
+
+%============ Custom Lists ===================%
+% Custom Enumerate:
+%   First argument is character code from pifont
+%   Second argument is item list
+\newcommand*{\customenumerate}[2]{%
+    \begin{enumerate}[topsep=0pt, itemsep=0pt, parsep=0pt, label=\ding{\value{enumi}}, start=#1]
+        #2
+    \end{enumerate}
+}
+
+% Bulleted List 1: Black triangles facing right 
+\newlist{list-triangle}{itemize}{1}
+\setlist[list-triangle]{topsep=0pt, itemsep=0pt, parsep=0pt, labelindent=0.5cm, leftmargin=*}
+\setlist[list-triangle,1]{label=\(\blacktriangleright\)}
+
+%============ End Custom Lists ===============%

@@ -1,0 +1,53 @@
+% Tell chkTeX to ignore the following warning codes:
+% chktex-file 11 
+% chktex-file 12
+% chktex-file 16
+% chktex-file 18
+% chktex-file 23
+% chktex-file 36
+\dictum[Unknown]{
+    There are two types of engineers: those that intentionally create antennas and those who accidentally create antennas.
+}
+
+
+\lipsum[1]
+
+\begin{codebox}{\linewidth}{Beginning Code}
+# Create function
+def f(x: int, y: float):
+    '''
+    This function does stuff
+    '''
+    if int(y) > x:
+        f(2)
+        print("It worked!")
+        return 3 * y
+    return 2 * x
+\end{codebox}
+
+\begin{pyshell}{\linewidth}{Basic Use}
+>>> def f(x):
+...     return x    
+\end{pyshell}
+
+\lipsum[2]
+
+\begin{shell}{\linewidth}{Basic Use}
+ryan@laptop:$ cd python-scripts/
+root@laptop:# python3 main.py
+Hello World!
+\end{shell}
+
+\lipsum[3]
+
+\customenumerate{202}{
+    \item Item 1
+    \item Item 2
+}
+
+\begin{list-triangle}
+    \item hello
+    \item world
+\end{list-triangle}
+
+I'm writing some text now
